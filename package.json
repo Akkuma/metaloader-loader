@@ -1,0 +1,31 @@
+{
+  "name": "metaloader-loader",
+  "version": "1.0.0",
+  "description": "Metaloader compiles files that need to be ran through webpack/loaders first, so your other loaders can consume them",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akkuma/metaloader-loader.git"
+  },
+  "keywords": [
+    "webpack",
+    "webpack-loader",
+    "compiler",
+    "meta"
+  ],
+  "author": "Gregory Waxman <akkuma+github@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Akkuma/metaloader-loader/issues"
+  },
+  "homepage": "https://github.com/Akkuma/metaloader-loader#readme",
+  "dependencies": {
+    "memory-fs": "^0.3.0"
+  },
+  "peerDependencies": {
+    "webpack": "^1.9.0 || ^2.1.0-beta.0"
+  }
+}
