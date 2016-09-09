@@ -7,23 +7,30 @@ const METALOADER = 'metaloader';
 module.exports = function(content) {
   if(!this.webpack) throw new Error("Only usable with webpack");
   if (this._compiler.isChild()) return content;
-
   this.cacheable();
 
   const callback = this.async();
-
   const outputOptions = {
     filename: METALOADER
   };
 
-  var metaloaderCompiler = this._compilation.createChildCompiler(METALOADER, outputOptions);
-  metaloaderCompiler.outputFileSystem = new MemoryFS();
-  metaloaderCompiler.apply(new SingleEntryPlugin(this.context, "!!" + this.request, METALOADER));
+  const loaders = this.loaders.slice(this.loaderIndex + 1).reduce(function(acc, loader) {
+    acc.push(loader.request);
+    return acc;
+  }, []);
+  loaders.push(this.resourcePath);
 
+  const metaloaderCompiler = this._compilation.createChildCompiler(METALOADER, outputOptions);
+  metaloaderCompiler.outputFileSystem = new MemoryFS();
+  metaloaderCompiler.apply(new SingleEntryPlugin(this.context, '!!' + loaders.join('!'), METALOADER));
+
+  const self = this;
   metaloaderCompiler.runAsChild(function(err, entries, compilation) {
     if(err) return callback(err);
 
     const file = compilation.assets[METALOADER];
-    return callback(null, file ? file.source() : content);
+    const source = file ? file.source() : content;
+
+    callback(null, source);
   });
 };
